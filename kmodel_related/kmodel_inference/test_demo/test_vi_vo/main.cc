@@ -7,9 +7,12 @@ using std::endl;
 
 int main()
 {
-    vivcap_start();
+    //sensor有2路输出，
+    //第0路用于显示，输出大小设置1080p,图像格式为PIXEL_FORMAT_YVU_PLANAR_420,直接绑定到vo
+    //第1路用于AI计算，输出大小720p,图像格式为PIXEL_FORMAT_BGR_888_PLANAR（实际为rgb,chw,uint8）
+    vivcap_start();    
 
-    // 设置osd参数
+    // osd大小为1080p,图像格式为PIXEL_FORMAT_ARGB_8888
     k_video_frame_info vf_info;
     void *pic_vaddr = NULL;
     memset(&vf_info, 0, sizeof(vf_info));
@@ -19,7 +22,7 @@ int main()
     vf_info.v_frame.pixel_format = PIXEL_FORMAT_ARGB_8888;
     block = vo_insert_frame(&vf_info, &pic_vaddr);
 
-    // alloc memory for sensor
+    // alloc memory for sensor，将sensor对应AI的一路数据拷贝到vaddr，以备AI使用
     size_t paddr = 0;
     void *vaddr = nullptr;
     size_t size = SENSOR_CHANNEL * SENSOR_HEIGHT * SENSOR_WIDTH;

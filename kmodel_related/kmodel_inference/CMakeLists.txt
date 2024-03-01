@@ -22,8 +22,8 @@ link_directories(${nncase_sdk_root}/riscv64/nncase/lib/)
 
 add_subdirectory(face_detection)
 add_subdirectory(face_recognition)
-# add_subdirectory(test_demo)
-# add_subdirectory(main_nncase)
+add_subdirectory(test_demo)
+add_subdirectory(main_nncase)
 
 
 

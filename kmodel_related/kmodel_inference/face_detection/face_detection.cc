@@ -81,7 +81,7 @@ FaceDetection::FaceDetection(const char *kmodel_file, float obj_thresh, float nm
     ai2d_out_tensor_ = get_input_tensor(0);
 
     // fixed padding resize param
-    Utils::padding_resize_one_side(isp_shape, {input_shapes_[0][3], input_shapes_[0][2]}, ai2d_builder_, ai2d_in_tensor_, ai2d_out_tensor_, cv::Scalar(104, 117, 123));
+    Utils::padding_resize_one_side(isp_shape, {input_shapes_[0][3], input_shapes_[0][2]}, ai2d_builder_, ai2d_in_tensor_, ai2d_out_tensor_, cv::Scalar(123, 117, 104));
 }
 
 // ai2d for image
@@ -90,7 +90,7 @@ void FaceDetection::pre_process(cv::Mat ori_img)
     ScopedTiming st(model_name_ + " pre_process image", debug_mode_);
     std::vector<uint8_t> chw_vec;
     Utils::bgr2rgb_and_hwc2chw(ori_img, chw_vec);
-    Utils::padding_resize_one_side({ori_img.channels(), ori_img.rows, ori_img.cols}, chw_vec, {input_shapes_[0][3], input_shapes_[0][2]}, ai2d_out_tensor_, cv::Scalar(104, 117, 123));
+    Utils::padding_resize_one_side({ori_img.channels(), ori_img.rows, ori_img.cols}, chw_vec, {input_shapes_[0][3], input_shapes_[0][2]}, ai2d_out_tensor_, cv::Scalar(123, 117, 104));
 	if (debug_mode_ > 1)
 	{
 		auto vaddr_out_buf = ai2d_out_tensor_.impl()->to_host().unwrap()->buffer().as_host().unwrap().map(map_access_::map_read).unwrap().buffer();
