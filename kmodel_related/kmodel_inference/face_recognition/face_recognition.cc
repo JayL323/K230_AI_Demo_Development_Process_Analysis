@@ -208,17 +208,9 @@ void FaceRecognition::database_search(FaceRecognitionInfo &result)
 	float v_score;
 	float v_score_max = 0.0;
 	float basef[feature_num_], testf[feature_num_];
-	if (debug_mode_ > 2)
-	{
-		//排除预处理、模型推理，直接拿simulator kmodel数据，判断后处理代码正确性。
-		vector<float> out0 = Utils::read_binary_file<float>("face_recg_0_k230_simu.bin");
-		l2_normalize(out0.data(), testf, feature_num_);
-	}
-	else
-	{
-		// current frame
-		l2_normalize(p_outputs_[0], testf, feature_num_);
-	}
+	
+	// current frame
+	l2_normalize(p_outputs_[0], testf, feature_num_);
 	
 	for (i = 0; i < valid_register_face_; i++)
 	{

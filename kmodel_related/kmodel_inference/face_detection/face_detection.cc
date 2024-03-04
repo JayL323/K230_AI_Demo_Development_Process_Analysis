@@ -129,9 +129,9 @@ void FaceDetection::post_process(FrameSize frame_size, vector<FaceDetectionInfo>
 	if (debug_mode_ > 2)
 	{
 		//排除预处理、模型推理，直接拿simulator kmodel数据，判断后处理代码正确性。
-		vector<float> out0 = Utils::read_binary_file<float>("face_det_0_k230_simu.bin");
-		vector<float> out1 = Utils::read_binary_file<float>("face_det_1_k230_simu.bin");
-		vector<float> out2 = Utils::read_binary_file<float>("face_det_2_k230_simu.bin");
+		vector<float> out0 = Utils::read_binary_file<float>("../debug/face_det_0_k230_simu.bin");
+		vector<float> out1 = Utils::read_binary_file<float>("../debug/face_det_1_k230_simu.bin");
+		vector<float> out2 = Utils::read_binary_file<float>("../debug/face_det_2_k230_simu.bin");
 		filter_confs(out1.data());
 		filter_locs(out0.data());
 		filter_landms(out2.data());

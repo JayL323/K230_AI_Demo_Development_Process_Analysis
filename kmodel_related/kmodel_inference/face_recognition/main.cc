@@ -85,7 +85,7 @@ void print_usage(const char *name)
          << "  max_register_face        人脸识别数据库最大容量\n"
          << "  recg_thres               人脸识别阈值\n"
          << "  input_mode               本地图片(图片路径)/ 摄像头(None) \n"
-         << "  debug_mode               是否需要调试，0、1、2、3分别表示不调试、耗时统计调试、预处理调试、后处理调试\n"
+         << "  debug_mode               是否需要调试，0、1、2分别表示不调试、耗时统计调试、预处理调试\n"
          << "  db_dir                   数据库目录\n"
          << "\n"
          << endl;
@@ -166,43 +166,52 @@ void video_proc(char *argv[])
         {
             if (ch == 'i')      //for i key
             {
+                float max_area_face = 0;
+                int max_id_face = -1;
                 for (int i = 0; i < det_results.size(); ++i)
-                {                   
-                    //***for face recg***
-                    face_recg.pre_process(det_results[i].sparse_kps.points);
-                    face_recg.inference();
-
-                    FaceRecognitionInfo recg_result;
-                    face_recg.database_search(recg_result); 
-                    face_recg.draw_result(osd_frame,det_results[i].bbox,recg_result,false);
-
-                    string ret_name = "unknown";
-                    if(recg_result.score>recg_thres)
-                        ret_name = recg_result.name;
-                    
-                    set_terminal_mode(true);
-                    set_read_block_mode(true);
-                    if(ret_name == "unknown" && face_recg.valid_register_face_ < max_register_face)
-                    {    
-                        face_recg.database_insert(argv[9]);
-                    }
-                    else
+                {
+                    float area_i = det_results[i].bbox.w * det_results[i].bbox.h;
+                    if (area_i > max_area_face)
                     {
-                        cerr<<"registration failed"<<endl;
-                        if(ret_name != "unknown")
-                        {
-                            cerr<<"face registered"<<endl;
-                        }
-                        else if(face_recg.valid_register_face_ > max_register_face)
-                        {
-                            cerr<<"face database full"<<endl;
-                        }
-                        
+                        max_area_face = area_i;
+                        max_id_face = i;
                     }
-                    std::this_thread::sleep_for(std::chrono::seconds(3));
-                    set_read_block_mode(false);
-                    set_terminal_mode(false);
                 }
+           
+                //***for face recg***
+                face_recg.pre_process(det_results[max_id_face].sparse_kps.points);
+                face_recg.inference();
+
+                FaceRecognitionInfo recg_result;
+                face_recg.database_search(recg_result); 
+                face_recg.draw_result(osd_frame,det_results[max_id_face].bbox,recg_result,false);
+
+                string ret_name = "unknown";
+                if(recg_result.score>recg_thres)
+                    ret_name = recg_result.name;
+                
+                set_terminal_mode(true);
+                set_read_block_mode(true);
+                if(ret_name == "unknown" && face_recg.valid_register_face_ < max_register_face)
+                {    
+                    face_recg.database_insert(argv[9]);
+                }
+                else
+                {
+                    cerr<<"registration failed"<<endl;
+                    if(ret_name != "unknown")
+                    {
+                        cerr<<"face registered"<<endl;
+                    }
+                    else if(face_recg.valid_register_face_ > max_register_face)
+                    {
+                        cerr<<"face database full"<<endl;
+                    }
+                    
+                }
+                std::this_thread::sleep_for(std::chrono::seconds(3));
+                set_read_block_mode(false);
+                set_terminal_mode(false);
             }
             else if (ch == 'r')        //for r key
             {
