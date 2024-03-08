@@ -90,8 +90,8 @@ def main():
     input_shape = [1, 3, 112, 112]
     compile_options.input_shape = input_shape
     # 输入数据的layout，默认为""
-    # compile_options.input_layout = "NCHW"
-    compile_options.input_layout = "0,1,2,3"
+    compile_options.input_layout = "NCHW"
+    #compile_options.input_layout = "0,1,2,3"
     
     # （2）预处理---SwapRB相关参数
     compile_options.swapRB = False
