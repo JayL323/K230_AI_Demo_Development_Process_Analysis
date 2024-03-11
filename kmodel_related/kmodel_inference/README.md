@@ -6,13 +6,13 @@
 
 - 对于编译上板程序来说，请确保K230_AI_Demo_Development_Process_Analysis放到k230_sdk/src/reference
 
--  ```bash
-  cd k230_sdk/src/reference
-  git clone https://github.com/JayL323/K230_AI_Demo_Development_Process_Analysis.git
-   ```
-
+```bash
+cd k230_sdk/src/reference
+git clone https://github.com/JayL323/K230_AI_Demo_Development_Process_Analysis.git
+```
 
 #debug模式
+
 ```bash
 #debug模式下生成各种调试时使用可执行文件
 ./build_app.sh debug
