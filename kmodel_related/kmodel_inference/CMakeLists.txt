@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.2)
 project(nncase_sdk C CXX)
 
-set(nncase_sdk_root "/mnt/src/big/nncase/")
-# set(nncase_sdk_root "${PROJECT_SOURCE_DIR}/../../big/nncase/")
+# set(nncase_sdk_root "k230_sdk/src/big/nncase/")
+set(nncase_sdk_root "${PROJECT_SOURCE_DIR}/../../../../big/nncase/")
 set(k230_sdk ${nncase_sdk_root}/../../../)
 set(CMAKE_EXE_LINKER_FLAGS "-T ${PROJECT_SOURCE_DIR}/cmake/link.lds --static")
 
@@ -22,8 +22,8 @@ link_directories(${nncase_sdk_root}/riscv64/nncase/lib/)
 
 add_subdirectory(face_detection)
 add_subdirectory(face_recognition)
-# add_subdirectory(test_demo)
-# add_subdirectory(main_nncase)
+add_subdirectory(test_demo)
+add_subdirectory(main_nncase)
 
 
 
