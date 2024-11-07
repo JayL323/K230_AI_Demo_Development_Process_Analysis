@@ -1,7 +1,7 @@
 import torch
 from itertools import product as product
 from math import ceil
-from data import cfg_mnet
+from config import cfg_mnet
 import numpy as np
 
 
